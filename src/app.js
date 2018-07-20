@@ -13,9 +13,9 @@ import "react-dates/lib/css/_datepicker.css";
 // This is gonna get the return value from configureStore, and
 // give us the access to store.dispatch(), store.getState(), and store.subscribe()
 const store = configureStore();
-store.dispatch(addExpense({ description:'Water bill', amount: 4500 }));
-store.dispatch(addExpense({ description:'Gas bill', createdAt: 1000 }));
-store.dispatch(addExpense({ description: 'Rent', amount: 10950 }));
+// store.dispatch(addExpense({ description:'Water bill', amount: 4500 }));
+// store.dispatch(addExpense({ description:'Gas bill', createdAt: 1000 }));
+// store.dispatch(addExpense({ description: 'Rent', amount: 10950 }));
 //store.dispatch(setTextFilter('bill'));
 //store.dispatch(setTextFilter('water'));
 //console.log(getVisibleExpenses());
@@ -25,9 +25,9 @@ store.dispatch(addExpense({ description: 'Rent', amount: 10950 }));
 //     store.dispatch(setTextFilter('bill'));
 // }, 3000);
 
-const state = store.getState();
-const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
-console.log(visibleExpenses);
+// const state = store.getState();
+// const visibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+// console.log(visibleExpenses);
 
 
 
