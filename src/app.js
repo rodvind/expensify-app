@@ -9,6 +9,8 @@ import getVisibleExpenses from "./selectors/expenses";
 import "normalize.css/normalize.css";
 import './styles/styles.scss';
 import "react-dates/lib/css/_datepicker.css";
+import "./firebase/firebase";
+//import "./playground/promises"
 
 // This is gonna get the return value from configureStore, and
 // give us the access to store.dispatch(), store.getState(), and store.subscribe()

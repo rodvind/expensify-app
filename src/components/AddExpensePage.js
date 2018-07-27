@@ -1,14 +1,35 @@
 import React from "react";
 import { connect } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
-import { addExpense } from "../actions/expenses";
+//import { addExpense } from "../actions/expenses";
+import { startAddExpense } from "../actions/expenses";
 
 // To avoid inline functions, switch to class-based component
 // We must use this.props for the class-based component
 // To test unconnected component version, we need to export it
+// export class AddExpensePage extends React.Component {
+//   onSubmit = (expense) => {
+//     this.props.addExpense(expense);
+//     this.props.history.push('/');
+//   };
+//   render() {
+//     return (
+//       <div>
+//         <h1>Add Expense</h1>
+//         <ExpenseForm
+//         // We no longer define the function inline which would need
+//         // to get recalculated on every render, instead, we just 
+//         // reference "this.onSubmit"
+//           onSubmit={this.onSubmit}
+//         />
+//     </div>
+//     );
+//   };
+// };
+
 export class AddExpensePage extends React.Component {
   onSubmit = (expense) => {
-    this.props.addExpense(expense);
+    this.props.startAddExpense(expense);
     this.props.history.push('/');
   };
   render() {
@@ -69,7 +90,8 @@ const mapDispatchToProps = (dispatch) => ({
   // We pass addexpense property to be able to use it inside the 
   // ExpenseForm tag
   // Use the name of the action generator, addExpense
-    addExpense: (expense) => dispatch(addExpense(expense))
+    //addExpense: (expense) => dispatch(addExpense(expense))
+    startAddExpense: (expense) => dispatch(startAddExpense(expense))
 });
 
 
