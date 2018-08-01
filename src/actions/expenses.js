@@ -116,3 +116,16 @@ export const startSetExpenses = () => {
     });
   };
 };
+
+// Asynchronous action
+// Create startRemoveExpense (same call signature as removeExpense)
+// Test startRemoveExpense with 'should remove expense from firebase'
+// Use startRemoveExpense in EditExpensePage instead of removeExpense
+// Adjust EditEspensePage tests
+export const startRemoveExpense = ({ id } = {}) => {
+  return (dispatch) => {
+    return database.ref(`expenses/${id}`).remove().then(() => {
+      dispatch(removeExpense({ id }));
+    });
+  };
+};
