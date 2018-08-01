@@ -54,14 +54,14 @@ export const addExpense = (expense) => ({
 // store reflect those changes as well 
 // At the end, we need to dispatch startAddExpense in AddExpensePage 
 // instead of addExpense
-export const startAddExpense = (expenseData = {}) => {
+export const startAddExpense = (expensesData = {}) => {
   return (dispatch) => {
     const {
       description = '',
       note = '',
       amount = 0,
       createdAt = 0
-    } = expenseData;
+    } = expensesData;
     const expense = { description, note, amount, createdAt };
     // We need to return the value from then() to be able to chain the
     // returned value to another then() in our test suites
@@ -86,3 +86,33 @@ export const editExpense = (id, updates) => ({
     id,
     updates
 });
+
+// Changes the redux store: SET_EXPENSES: This is gonna allow us to completely
+// set the array value. We get the array back from firebase, we set and we're done
+export const setExpenses = (expenses) => ({
+  type: 'SET_EXPENSES',
+  expenses
+});
+
+// Asynchronous Action which is responsible for fetching data from firebase
+// and dispatch setExpenses
+// Fetch all expense data once
+// Parse that data into an array
+// Dispatch setExpenses to change the data
+export const startSetExpenses = () => {
+  return (dispatch) => {
+    // return the promise to allow us access to then() to be able to dispatch
+    return database.ref('expenses').once('value').then((snapshot) => {
+      const expenses = [];
+
+      snapshot.forEach((childSnapshot) => {
+        expenses.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+
+      dispatch(setExpenses(expenses))
+    });
+  };
+};
