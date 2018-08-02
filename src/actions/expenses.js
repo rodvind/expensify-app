@@ -112,7 +112,7 @@ export const startSetExpenses = () => {
         });
       });
 
-      dispatch(setExpenses(expenses))
+      dispatch(setExpenses(expenses));
     });
   };
 };
@@ -126,6 +126,14 @@ export const startRemoveExpense = ({ id } = {}) => {
   return (dispatch) => {
     return database.ref(`expenses/${id}`).remove().then(() => {
       dispatch(removeExpense({ id }));
+    });
+  };
+};
+
+export const startEditExpense = (id, updates) => {
+  return (dispatch) => {
+    return database.ref(`expenses/${id}`).update(updates).then(() => {
+      dispatch(editExpense(id, updates))
     });
   };
 };
