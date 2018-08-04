@@ -55,7 +55,8 @@ export const addExpense = (expense) => ({
 // At the end, we need to dispatch startAddExpense in AddExpensePage 
 // instead of addExpense
 export const startAddExpense = (expensesData = {}) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const {
       description = '',
       note = '',
@@ -65,7 +66,7 @@ export const startAddExpense = (expensesData = {}) => {
     const expense = { description, note, amount, createdAt };
     // We need to return the value from then() to be able to chain the
     // returned value to another then() in our test suites
-    return database.ref('expenses').push(expense).then((ref) => {
+    return database.ref(`users/${uid}/expenses`).push(expense).then((ref) => {
       dispatch(addExpense({
         id: ref.key,
         ...expense
@@ -80,12 +81,35 @@ export const removeExpense = ({ id } = {}) => ({
     id
 });
 
+// Asynchronous action
+// Create startRemoveExpense (same call signature as removeExpense)
+// Test startRemoveExpense with 'should remove expense from firebase'
+// Use startRemoveExpense in EditExpensePage instead of removeExpense
+// Adjust EditEspensePage tests
+export const startRemoveExpense = ({ id } = {}) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
+      dispatch(removeExpense({ id }));
+    });
+  };
+};
+
 // EDIT_EXPENSE - Implicitly returns an object with updated properties/property
 export const editExpense = (id, updates) => ({
     type: 'EDIT_EXPENSE',
     id,
     updates
 });
+
+export const startEditExpense = (id, updates) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    return database.ref(`users/${uid}/expenses/${id}`).update(updates).then(() => {
+      dispatch(editExpense(id, updates))
+    });
+  };
+};
 
 // Changes the redux store: SET_EXPENSES: This is gonna allow us to completely
 // set the array value. We get the array back from firebase, we set and we're done
@@ -100,9 +124,10 @@ export const setExpenses = (expenses) => ({
 // Parse that data into an array
 // Dispatch setExpenses to change the data
 export const startSetExpenses = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     // return the promise to allow us access to then() to be able to dispatch
-    return database.ref('expenses').once('value').then((snapshot) => {
+    return database.ref(`users/${uid}/expenses`).once('value').then((snapshot) => {
       const expenses = [];
 
       snapshot.forEach((childSnapshot) => {
@@ -117,23 +142,3 @@ export const startSetExpenses = () => {
   };
 };
 
-// Asynchronous action
-// Create startRemoveExpense (same call signature as removeExpense)
-// Test startRemoveExpense with 'should remove expense from firebase'
-// Use startRemoveExpense in EditExpensePage instead of removeExpense
-// Adjust EditEspensePage tests
-export const startRemoveExpense = ({ id } = {}) => {
-  return (dispatch) => {
-    return database.ref(`expenses/${id}`).remove().then(() => {
-      dispatch(removeExpense({ id }));
-    });
-  };
-};
-
-export const startEditExpense = (id, updates) => {
-  return (dispatch) => {
-    return database.ref(`expenses/${id}`).update(updates).then(() => {
-      dispatch(editExpense(id, updates))
-    });
-  };
-};
