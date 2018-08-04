@@ -13,9 +13,9 @@ const config = {
 firebase.initializeApp(config);
 // We never pass an argument to the database()
 const database = firebase.database();
-
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 // Exports
-export { firebase, database as default };
+export { firebase, googleAuthProvider, database as default };
 
 
 ///////////////////////////// CRUD Operations ////////////////////////////
