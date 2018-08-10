@@ -14,17 +14,26 @@ import selectExpenses from "../selectors/expenses";
 // So if we are gonna be testin the un-connected version, we actually
 // have to export it by name 
 export const ExpenseList = (props) => (
-    <div>
-        {
-          props.expenses.length === 0 ? (
-            <p>No expenses</p>
-          ) : (
-            props.expenses.map((expense) => {
-              return <ExpenseListItem key={expense.id} {...expense}/>;
-            })
-          )
-        }
+  <div className="content-container">
+    <div className="list-header">
+      <div className="show-for-mobile">Expense</div>
+      <div className="show-for-desktop">Expense</div>
+      <div className="show-for-desktop">Amount</div>
     </div>
+    <div className="list-body">
+    {
+      props.expenses.length === 0 ? (
+        <div className="list-item list-item--message">
+          <span>No expenses</span>
+        </div>
+      ) : (
+        props.expenses.map((expense) => {
+          return <ExpenseListItem key={expense.id} {...expense}/>;
+        })
+      )
+    }
+    </div>
+  </div>
 );
 
 // Create a new const for the Higher Order Component
