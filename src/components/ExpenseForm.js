@@ -105,8 +105,7 @@ export default class ExpenseForm extends React.Component {
               value={this.state.description}
               onChange={this.onDescriptionChange}
             />
-            <input 
-              //type="number"
+            <input
               type="text"
               placeholder="Amount"
               className="text-input"
